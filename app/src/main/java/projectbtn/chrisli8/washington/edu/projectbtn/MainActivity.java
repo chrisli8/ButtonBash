@@ -3,6 +3,9 @@ package projectbtn.chrisli8.washington.edu.projectbtn;
 import java.util.*;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -26,6 +29,8 @@ public class MainActivity extends Activity {
 
     public int[] colorArry = {Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.CYAN};
 
+    private boolean gameFragmentOn = false;
+
     // Power Ups
     public boolean colorCoded = false;
 
@@ -37,7 +42,19 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        grid = (RelativeLayout) findViewById(R.id.grid);
+        Button btnFragment = (Button)findViewById(R.id.menuBtn);
+        btnFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rotateFragment();
+            }
+        });
+
+        rotateFragment();
+
+
+        //grid = (RelativeLayout) findViewById(R.id.grid);
+        // grid = (RelativeLayout) findViewById(R.id.grid);
         timeHandler= new Handler();
 
         timeHandler.postDelayed(new Runnable() {
@@ -64,6 +81,28 @@ public class MainActivity extends Activity {
 
         setBoard(grid);
 
+    }
+
+    private void rotateFragment() {
+        Fragment frag = null;
+
+        GameFragment gameFrag = new GameFragment();
+        gameFrag.getLayout();
+
+        if (!gameFragmentOn) {
+            gameFragmentOn = true;
+            frag = new GameFragment();
+            grid = (RelativeLayout) frag.getView().findViewById(R.id.grid);
+        }
+        else {
+            gameFragmentOn = false;
+            frag = new MenuFragment();
+        }
+
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.placeHolder, frag);
+        fragmentTransaction.commit();
     }
 
     private void setBoard(RelativeLayout grid) {

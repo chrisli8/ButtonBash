@@ -2,10 +2,11 @@ package projectbtn.chrisli8.washington.edu.projectbtn;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 
 /**
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
  */
 public class GameFragment extends Fragment {
 
+    RelativeLayout fragment;
 
     public GameFragment() {
         // Required empty public constructor
@@ -22,8 +24,14 @@ public class GameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_game, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_game, container, false);
+        fragment = (RelativeLayout) view.findViewById(R.id.grid);
+        return view;
+    }
+
+    public RelativeLayout getLayout() {
+        return this.fragment;
     }
 
 }
